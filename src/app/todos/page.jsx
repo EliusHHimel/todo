@@ -23,7 +23,10 @@ const page = () => {
             text: inputText
         }
         const res = await axios.post('/api/todos', data);
-        console.log(res);
+        console.log(res.data);
+
+        setTodos([...todos, res.data]);
+        setInputText("");
     }
     if (editTodo) {
         return (
@@ -55,9 +58,11 @@ const page = () => {
             <div className="todo_list">
                 {todos.map((todo) => {
                     return (
-                        <div key={todo._id} className='flex justify-between items-center p-2 bg-white rounded my-3 shadow-md gap-2 w-60 pointer'>
-                            <input type="checkbox" name="" id="" />
-                            <div>{todo.text}</div>
+                        <div key={todo._id} className='flex justify-between p-2 bg-white rounded my-3 shadow-md gap-3 pointer w-[450px]'>
+                            <div className='flex gap-2'>
+                                <input type="checkbox" name="" id="" />
+                                <p className='text-justify'>{todo.text}</p>
+                            </div>
                             <div className='flex gap-2'>
                                 <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' />
                                 <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' />
