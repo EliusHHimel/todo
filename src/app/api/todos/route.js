@@ -46,7 +46,8 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
     try {
-        await Todo.deleteOne({ id: request.body.id });
+        await Todo.deleteMany({});
+        return NextResponse.json({ msg: "Todo List Cleared" });
     }
     catch (error) {
         return NextResponse.json({ error: error.message, status: error.status });

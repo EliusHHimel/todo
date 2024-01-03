@@ -29,9 +29,10 @@ const page = () => {
         setInputText("");
     }
 
-    async function deleteTodo(id) {
-        const res = await axios.delete('/api/todos', { data: { id } });
+    async function clearTodo() {
+        const res = await axios.delete('/api/todos');
         console.log(res.data);
+        setTodos([]);
     }
 
     async function editTodo() {
@@ -64,7 +65,7 @@ const page = () => {
                     value={inputText}
                     onChange={e => setInputText(e.target.value)} />
                 <button className='text-white bg-green-700 px-5 rounded border border-green-700 hover:text-green-700 hover:bg-white' onClick={addTodo}>Add</button>
-                <button className='text-white bg-red-700 px-5 rounded border border-red-700 hover:bg-white hover:text-red-700'>Clear</button>
+                <button className='text-white bg-red-700 px-5 rounded border border-red-700 hover:bg-white hover:text-red-700' onClick={clearTodo}>Clear</button>
             </div>
             <div className="todo_list">
                 {todos.map((todo) => {
@@ -76,7 +77,7 @@ const page = () => {
                             </div>
                             <div className='flex gap-2'>
                                 <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' onClick={() => setEditMode(true)} />
-                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' onClick={() => deleteTodo(todo.id)} />
+                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' />
                             </div>
                         </div>
                     )
