@@ -7,7 +7,7 @@ import axios from 'axios';
 const page = () => {
     const [inputText, setInputText] = useState("");
     const [todos, setTodos] = useState([]);
-    const [editTodo, setEditTodo] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
         async function getTodos() {
@@ -28,7 +28,18 @@ const page = () => {
         setTodos([...todos, res.data]);
         setInputText("");
     }
-    if (editTodo) {
+
+    async function deleteTodo(id) {
+        const res = await axios.delete('/api/todos', { data: { id } });
+        console.log(res.data);
+    }
+
+    async function editTodo() {
+        const res = await axios.put('/api/todos');
+        console.log(res.data);
+    }
+
+    if (editMode) {
         return (
             <>
                 <div className='flex justify-center flex-col items-center px-4 py-10 bg-slate-300'>
@@ -36,7 +47,7 @@ const page = () => {
                     <div className='flex gap-2'>
                         <input className='p-2 rounded' type="text" placeholder='Edit To Do' />
                         <input type="checkbox" name="" id="" />
-                        <button className='bg-blue-400 p-2 rounded border border-blue-400 hover:bg-white'>Submit</button>
+                        <button className='bg-blue-400 p-2 rounded border border-blue-400 hover:bg-white' onClick={editTodo}>Submit</button>
                     </div>
                 </div>
             </>
@@ -58,14 +69,14 @@ const page = () => {
             <div className="todo_list">
                 {todos.map((todo) => {
                     return (
-                        <div key={todo._id} className='flex justify-between p-2 bg-white rounded my-3 shadow-md gap-3 pointer w-[450px]'>
+                        <div key={todo._id} className='flex justify-between items-center p-2 bg-white rounded my-3 shadow-md gap-3 pointer w-[450px]'>
                             <div className='flex gap-2'>
-                                <input type="checkbox" name="" id="" />
+                                <input type="checkbox" checked={todo.status} />
                                 <p className='text-justify'>{todo.text}</p>
                             </div>
                             <div className='flex gap-2'>
-                                <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' />
-                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' />
+                                <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' onClick={() => setEditMode(true)} />
+                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' onClick={() => deleteTodo(todo.id)} />
                             </div>
                         </div>
                     )

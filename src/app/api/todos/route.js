@@ -29,3 +29,26 @@ export async function POST(request) {
         return NextResponse.json({ error: error.message, status: error.status });
     }
 }
+
+export async function PUT(request) {
+    try {
+        const { id, text, status } = await request.json();
+        const updatedToDo = await Todo.findOneAndUpdate(
+            { id },
+            { text, status },
+            { new: true }
+        );
+        return NextResponse.json(updatedToDo);
+    } catch (error) {
+        return NextResponse.json({ error: error.message, status: error.status });
+    }
+}
+
+export async function DELETE(request) {
+    try {
+        await Todo.deleteOne({ id: request.body.id });
+    }
+    catch (error) {
+        return NextResponse.json({ error: error.message, status: error.status });
+    }
+}
