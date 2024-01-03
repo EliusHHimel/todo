@@ -1,4 +1,12 @@
 "use client";
+
+// 'use client' makes pages client side that does not helps in SEO
+// try not to import 'react' and use 'use client' to make a page.
+// It will provide SEO and even better speed.
+// Try to use Dynamic routes as well.
+// References here → https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
+
+
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
