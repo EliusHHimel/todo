@@ -35,6 +35,11 @@ const page = () => {
         setTodos([]);
     }
 
+    async function deleteTodo(id) {
+        const res = await axios.delete(`/api/todos/${id}`);
+        console.log(res.data);
+    }
+
     async function editTodo() {
         const res = await axios.put('/api/todos');
         console.log(res.data);
@@ -77,7 +82,7 @@ const page = () => {
                             </div>
                             <div className='flex gap-2'>
                                 <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' onClick={() => setEditMode(true)} />
-                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' />
+                                <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' onClick={() => deleteTodo(todo.id)} />
                             </div>
                         </div>
                     )
