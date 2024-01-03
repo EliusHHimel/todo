@@ -1,14 +1,31 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 const page = () => {
     const [inputText, setInputText] = useState("");
-    const [todos, setTodos] = useState([1, 2, 3]);
+    const [todos, setTodos] = useState([]);
     const [editTodo, setEditTodo] = useState(false);
 
-    if (true) {
+    useEffect(() => {
+        async function getTodos() {
+            const res = await axios.get('/api/todos');
+            console.log(res);
+            setTodos(res.data.todos);
+        }
+        getTodos();
+    }, [])
+
+    async function addTodo() {
+        const data = {
+            text: inputText
+        }
+        const res = await axios.post('/api/todos', data);
+        console.log(res);
+    }
+    if (editTodo) {
         return (
             <>
                 <div className='flex justify-center flex-col items-center px-4 py-10 bg-slate-300'>
@@ -16,14 +33,14 @@ const page = () => {
                     <div className='flex gap-2'>
                         <input className='p-2 rounded' type="text" placeholder='Edit To Do' />
                         <input type="checkbox" name="" id="" />
-                        <button></button>
+                        <button className='bg-blue-400 p-2 rounded border border-blue-400 hover:bg-white'>Submit</button>
                     </div>
                 </div>
             </>
         )
     }
     return (
-        <div className='flex justify-center flex-col items-center px-4 py-10 bg-slate-300'>
+        <div className='flex justify-center flex-col items-center px-4 py-10 bg-slate-300' >
             <h1 className='text-2xl font-bold p-2'>Things I need to do</h1>
             <div className="flex gap-3">
                 <input
@@ -32,15 +49,15 @@ const page = () => {
                     placeholder='What to do?'
                     value={inputText}
                     onChange={e => setInputText(e.target.value)} />
-                <button className='text-white bg-green-700 px-5 rounded border border-green-700 hover:text-green-700 hover:bg-white'>Add</button>
+                <button className='text-white bg-green-700 px-5 rounded border border-green-700 hover:text-green-700 hover:bg-white' onClick={addTodo}>Add</button>
                 <button className='text-white bg-red-700 px-5 rounded border border-red-700 hover:bg-white hover:text-red-700'>Clear</button>
             </div>
             <div className="todo_list">
-                {todos.map((todo, index) => {
+                {todos.map((todo) => {
                     return (
-                        <div key={index} className='flex justify-between items-center p-2 bg-white rounded my-3 shadow-md gap-2 w-60 pointer'>
+                        <div key={todo._id} className='flex justify-between items-center p-2 bg-white rounded my-3 shadow-md gap-2 w-60 pointer'>
                             <input type="checkbox" name="" id="" />
-                            <div>{todo} Hi</div>
+                            <div>{todo.text}</div>
                             <div className='flex gap-2'>
                                 <FontAwesomeIcon icon={faPenToSquare} className='text-green-700 cursor-pointer' />
                                 <FontAwesomeIcon icon={faTrashCan} className='text-red-500 cursor-pointer' />
@@ -49,7 +66,7 @@ const page = () => {
                     )
                 })}
             </div>
-        </div>
+        </div >
     );
 };
 
