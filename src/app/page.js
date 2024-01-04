@@ -1,5 +1,7 @@
 import Image from 'next/image'
 
+// please use 'next/link' to route to your todo page from here
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
